@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactJson from 'react-json-view';
-import { useGlobalState } from '../../RestyProvider';
+import { useGlobalState } from '../../selectors/restySelectors';
+import { useSelector } from 'react-redux';
 
 const style = {
   backgroundColor: 'silver',
@@ -11,7 +12,7 @@ const style = {
   width: '100%'
 };
 const Results = () => {
-  const { result } = useGlobalState();
+  const { result } = useSelector(useGlobalState);
   return (
     <ReactJson src={result} style={style}/>
   );};

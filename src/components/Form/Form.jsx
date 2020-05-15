@@ -1,7 +1,11 @@
 import React from 'react'; 
 import RadioButton from './RadioButton';
 import style from './Form.css';
-import { useGlobalState, useHandleSubmit, useDispatch } from '../../RestyProvider';
+import { useSelector } from 'react-redux';
+import { useHandleChange, setFetchData } from '../../actions/restyActions';
+import { useGlobalState } from '../../selectors/restySelectors';
+import { useDispatch } from 'react-redux';
+import { useFetchData } from '../../hooks/restyHooks';
 
 
 const Form = () => {
@@ -12,26 +16,28 @@ const Form = () => {
     password: passwordInput, 
     bearerToken: bearerTokenInput, 
     selectedOption = 'GET', 
-  } = useGlobalState();
-
+    fetchData
+  } = useSelector(useGlobalState);
+  
   const dispatch = useDispatch();
-  const HandleChange = ({ target }, toChange) => {
-    dispatch({ type: toChange, payload: target.value });
-  };
+
+  const HandleChange = (e, toChange) => dispatch(useHandleChange(e, toChange));
+
   const HandleSubmit = (e) => {
     e.preventDefault();
-
-    dispatch({ type: 'setFetchData', payload: ({
+    const data = {
       url: urlInput,
       method: selectedOption,
       json: jsonInput,
       username: usernameInput,
       password: passwordInput,
       bearerToken: bearerTokenInput
-    })
-    });
+    };
+
+    dispatch(setFetchData(data));
   };
-  
+
+  useFetchData(fetchData);
 
   const radios = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map(method => (
     <RadioButton key={method} value={method} selectedOption={selectedOption} onOptionChange={(e) => HandleChange(e, 'setSelectedOption')} />));
