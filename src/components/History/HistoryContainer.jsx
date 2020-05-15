@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import withList from '../../HOCs/WithList';
 
 import style from './HistoryContainer.css';
-import { useGlobalState } from '../../RestyProvider';
+import { useGlobalState } from '../../selectors/restySelectors';
+import { useSelector } from 'react-redux';
 
 const HistoryItem = ({ url, method }) => (
   <>
@@ -20,7 +21,7 @@ HistoryItem.propTypes = {
 const HistoryElements = withList(HistoryItem);
 
 const HistoryContainer = () => {
-  const { history } = useGlobalState();
+  const { history } = useSelector(useGlobalState);
   return (
     <section className={style.HistoryContainer}>
       <h3>History</h3>
